@@ -1,11 +1,11 @@
 <a href="/">flowerz</a>
-<div>{{flower_name}}</div>
+<div>{{flower.name}}</div>
 <div>Change flower info:</div>
-<form action="/idk" method="POST">
-    <input type="text" placeholder="Enter new comname" name="common">
-    <input type="text" placeholder="Enter new genus" name="gen">
-    <input type="text" placeholder="Enter new species" name="species">
-    <button type="submit">Submit</button>
+<form action="/{{flower.name}}/update" method="POST">
+    <input type="text" placeholder="Enter new comname" name="common" value="{{flower.name}}">
+    <input type="text" placeholder="Enter new genus" name="genus" value="{{flower.gen}}">
+    <input type="text" placeholder="Enter new species" name="species" value="{{flower.spec}}">
+    <button type="submit">Update</button>
 </form>
 <div>10 most recent sightings:</div>
 <ul>
