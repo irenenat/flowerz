@@ -28,12 +28,12 @@ app.get('/', function (req, res) {
 
 app.get('/:flower', function (req, res) {
     db.serialize(() => {
-        db.all(`SELECT sighted AS date, location AS loc, person AS person FROM sightings WHERE name == "${req.params.flower}" ORDER BY sighted LIMIT 10`, (err, rows) => {
+        db.all(`SELECT sighted AS date, location AS loc, person AS person, name as name FROM sightings WHERE name == "${req.params.flower}" ORDER BY sighted LIMIT 10`, (err, rows) => {
           if (err) {
             console.error(err.message);
           }
           console.log(rows[0]);
-          res.render('sighted', {names: rows});
+          res.render('sighted', {names: rows, flower_name: req.params.flower});
         });
     });
 });
@@ -44,8 +44,8 @@ app.get('/person/:person', function (req, res) {
           if (err) {
             console.error(err.message);
           }
-          console.log(rows);
-          res.render('person', {names: rows});
+          console.log(rows[0]);
+          res.render('person', {names: rows, person_name: req.params.person});
         });
     });
 });

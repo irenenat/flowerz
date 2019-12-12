@@ -1,7 +1,15 @@
+<a href="/">flowerz</a>
+<div>{{flower_name}}</div>
+<div>Change flower info:</div>
+<form action="/idk" method="POST">
+    <input type="text" placeholder="Enter new comname" name="common">
+    <input type="text" placeholder="Enter new genus" name="gen">
+    <input type="text" placeholder="Enter new species" name="species">
+    <button type="submit">Submit</button>
+</form>
+<div>10 most recent sightings:</div>
 <ul>
     {{#each names}} 
-        <li>{{this.date}}</li>
-        <li>{{this.loc}}</li>
-        <li><a href="/person/{{this.person}}">{{this.person}}</a></li>
+        <li>{{this.date}}, at {{this.loc}} by <a href="/person/{{this.person}}">{{this.person}}</a></li>
     {{/each}}
 </ul>
