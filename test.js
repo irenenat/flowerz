@@ -2,6 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 var express = require('express');
 var exphbs  = require('express-handlebars');
 var bodyParser = require('body-parser');
+var ddg = require('duckduckgo-images-api');
 
 let db = new sqlite3.Database('../flowers2019.db', sqlite3.OPEN_READWRITE, (err) => {
     if(err) {
@@ -31,10 +32,12 @@ app.get('/sighted/:flower', function (req, res) {
     db.serialize(() => {
         db.all(`SELECT sighted AS date, location AS loc, person AS person, name as name FROM sightings WHERE name == "${req.params.flower}" ORDER BY sighted LIMIT 10`, (err, rows) => {
           db.all(`SELECT comname AS name, species AS spec, genus AS gen FROM flowers WHERE comname == "${req.params.flower}"`, (err, flowers) => {
-            if (err) {
-              console.error(err.message);
-            }
-            res.render('sighted', {names: rows, flower: flowers[0]});
+            ddg.image_search({ query: `${req.params.flower} flower`, moderate: true, iterations: 1 }).then((images) => {
+              if (err) {
+                console.error(err.message);
+              }
+              res.render('sighted', {names: rows, flower: flowers[0], image: images[0].image});
+            });
           });
         });
     });
