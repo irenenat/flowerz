@@ -20,19 +20,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', function (req, res) {
     db.serialize(() => {
         db.all(`SELECT comname AS name, species AS spec, genus AS gen FROM flowers`, (err, rows) => {
-          if (err) {
-            console.error(err.message);
-          }
-          res.render('home', {names: rows});
+          db.run(`CREATE TABLE IF NOT EXISTS log(type TEXT, name TEXT);`, function (err, result) {
+            db.run(`CREATE TRIGGER IF NOT EXISTS log_insert BEFORE INSERT ON sightings BEGIN INSERT INTO log (type, name) VALUES('INSERT', NEW.name); END;`, function (err, result) {
+              db.run(`CREATE TRIGGER IF NOT EXISTS log_update BEFORE UPDATE ON flowers BEGIN INSERT INTO log (type, name) VALUES('UPDATE', NEW.comname); END;`, function (err, result) {
+                if (err) {
+                  console.error(err.message);
+                }
+                res.render('home', {names: rows});
+              });
+            });
+          });
         });
     });
 });
+/*db.run(`create trigger if not exists log_insert before insert on SIGHTINGS BEGIN INSERT INTO log (type, name) VALUES('INSERT', '${req.body.flower}'); END;`, function (err, result) {
+  if (err) throw err;
+  console.log("Logged.");
+});*/
 
 app.get('/sighted/:flower', function (req, res) {
     db.serialize(() => {
         db.all(`SELECT sighted AS date, location AS loc, person AS person, name as name FROM sightings WHERE name == "${req.params.flower}" ORDER BY sighted LIMIT 10`, (err, rows) => {
           db.all(`SELECT comname AS name, species AS spec, genus AS gen FROM flowers WHERE comname == "${req.params.flower}"`, (err, flowers) => {
-            ddg.image_search({ query: `${req.params.flower} flower`, moderate: true, iterations: 1 }).then((images) => {
+            ddg.image_search({ query: `${req.params.flower} flower`, moderate: true }).then((images) => {
               if (err) {
                 console.error(err.message);
               }
@@ -85,10 +95,23 @@ app.get('/delete/:flower', function (req, res) {
     console.log(`Deleted ${req.params.flower} from flowers.`);
   });
   db.run(`DELETE FROM sightings WHERE name == '${req.params.flower}'`, function (err, result) {
-    if (err) throw err;
-    console.log(`Deleted ${req.params.flower} from sightings.`);
+    db.run(`INSERT INTO log (type, name) VALUES('DELETE', '${req.params.flower}')`, function (err, result) {
+      if (err) throw err;
+      console.log(`Deleted ${req.params.flower} from sightings.`);
+    });
   });
   res.redirect(`/`);
+});
+
+app.get('/log', function (req, res) {
+  db.serialize(() => {
+      db.all(`SELECT type AS type, name AS name FROM log`, (err, rows) => {
+          if (err) {
+            console.error(err.message);
+          }
+          res.render('log', {names: rows});
+      });
+  });
 });
  
 app.listen(5000);
