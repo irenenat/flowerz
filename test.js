@@ -63,5 +63,17 @@ app.post('/:flower/update', function (req, res) {
     });
   });
 });
+
+app.post('/insert', function (req, res) {
+  db.run(`INSERT INTO sightings (name, person, location, sighted) VALUES('${req.body.flower}', '${req.body.person}', '${req.body.loc}', '${req.body.date}')`, function (err, result) {
+    if (err) throw err;
+    console.log("Inserted to sightings.");
+  });
+  db.run(`INSERT INTO flowers (comname, genus, species) VALUES('${req.body.flower}', 'No genus', 'No species')`, function (err, result) {
+    if (err) throw err;
+    console.log("Inserted to flowers.");
+  });
+  res.redirect(`/`);
+});
  
 app.listen(5000);

@@ -1,5 +1,5 @@
 <a href="/">flowerz</a>
-<div>{{flower.name}}</div>
+<div>{{flower.name}} — {{flower.gen}} {{flower.spec}}</div>
 <div>Change flower info:</div>
 <form action="/{{flower.name}}/update" method="POST">
     <input type="text" placeholder="Enter new comname" name="common" value="{{flower.name}}">
