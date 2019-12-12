@@ -75,5 +75,17 @@ app.post('/insert', function (req, res) {
   });
   res.redirect(`/`);
 });
+
+app.get('/delete/:flower', function (req, res) {
+  db.run(`DELETE FROM flowers WHERE comname == '${req.params.flower}'`, function (err, result) {
+    if (err) throw err;
+    console.log(`Deleted ${req.params.flower} from flowers.`);
+  });
+  db.run(`DELETE FROM sightings WHERE name == '${req.params.flower}'`, function (err, result) {
+    if (err) throw err;
+    console.log(`Deleted ${req.params.flower} from sightings.`);
+  });
+  res.redirect(`/`);
+});
  
 app.listen(5000);
