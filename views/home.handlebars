@@ -1,14 +1,5 @@
-<div>flowerz</div>
-<div>Insert a new sighting:</div>
-<form action="/insert" method="POST">
-    <input type="text" placeholder="Enter flower name" name="flower">
-    <input type="text" placeholder="Enter person name" name="person">
-    <input type="text" placeholder="Enter location" name="loc">
-    <input type="text" placeholder="Enter date" name="date">
-    <button type="submit">Submit</button>
-</form>
 <ul>
     {{#each names}} 
-        <li><a href="/sighted/{{this.name}}">{{this.name}}</a></li>
+        <li class="flowerlist"><a class="flower" href="/sighted/{{this.name}}">{{this.name}}</a></li>
     {{/each}}
 </ul>
