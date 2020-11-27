@@ -1,21 +1,21 @@
 {
-  "name": "a5",
-  "version": "1.0.0",
-  "description": "",
-  "main": "test.js",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "bootstrap": "^4.4.1",
-    "duckduckgo-images-api": "^1.0.4",
-    "express": "^4.17.1",
-    "express-handlebars": "^3.1.0",
-    "mysql": "^2.17.1",
-    "sqlite3": "^4.1.1"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+	"name": "a5",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"bootstrap": "^4.4.1",
+		"duckduckgo-images-api": "^1.0.4",
+		"express": "^4.17.1",
+		"express-handlebars": "^3.1.0",
+		"mysql": "^2.17.1",
+		"sqlite3": "https://github.com/mapbox/node-sqlite3/tarball/master"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC"
 }
